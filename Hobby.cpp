@@ -9,9 +9,13 @@ std::string Hobby::getName() {
     return name;
 }
 
-void Hobby::addPlayer(std::shared_ptr<Player> player, bool callback) {
+void Hobby::addPlayer(std::shared_ptr<Player> player) {
     players.insert(player);
-    if(!callback) player->addHobby(shared_from_this(), true);
+    player->hobbyCallback(shared_from_this());
+}
+
+void Hobby::playerCallback(std::shared_ptr<Player> player) {
+    players.insert(player);
 }
 
 std::ostream& operator<<(std::ostream &output, const Hobby &hobby) { 

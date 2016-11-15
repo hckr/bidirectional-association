@@ -2,25 +2,36 @@
 #include "Team.h"
 #include "Hobby.h"
 
-Player::Player(std::string name) {
-    this->name = name;
+std::shared_ptr<Player> Player::makeWithoutTeam(std::string const &name) {
+    return std::shared_ptr<Player>(new Player(name));
 }
+
+Player::Player(std::string const &name)
+    : name(name) {}
 
 std::string Player::getName() {
     return name;
 }
 
-void Player::addTeam(std::shared_ptr<Team> team, bool callback) {
+void Player::addTeam(std::shared_ptr<Team> team) {
     teams.insert(team);
-    if(!callback) team->addPlayer(shared_from_this(), true);
+    team->playerCallback(shared_from_this());
 }
 
-void Player::addHobby(std::shared_ptr<Hobby> hobby, bool callback) {
+void Player::teamCallback(std::shared_ptr<Team> team) {
+    teams.insert(team);
+}
+
+void Player::addHobby(std::shared_ptr<Hobby> hobby) {
     hobbys.insert(hobby);
-    if(!callback) hobby->addPlayer(shared_from_this(), true);
+    hobby->playerCallback(shared_from_this());
 }
 
-std::ostream& operator<<(std::ostream &output, const Player &player) { 
+void Player::hobbyCallback(std::shared_ptr<Hobby> hobby) {
+    hobbys.insert(hobby);
+}
+
+std::ostream& operator<<(std::ostream &output, const Player &player) {
     output << "*** Player " + player.name + " ***\n";
     output << "Teams:\n";
     for(auto &team : player.teams) {

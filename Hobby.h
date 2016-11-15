@@ -14,7 +14,9 @@ class Hobby : public std::enable_shared_from_this<Hobby> {
 public:
     Hobby(std::string name);
     std::string getName();
-    void addPlayer(std::shared_ptr<Player> player, bool callback=false);
+    void addPlayer(std::shared_ptr<Player> player);
+    void playerCallback(std::shared_ptr<Player> player);
+
     friend std::ostream& operator<<(std::ostream &output, const Hobby &team);
 };
 
